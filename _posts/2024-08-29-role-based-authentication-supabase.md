@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Role Based Authentication"
-date:   2024-08-24 11:46 +0200
+date:   2024-08-29 13:44 +0200
 categories: databases
 ---
 # 1. Defining Roles
