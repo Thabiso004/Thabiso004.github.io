@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-24T22:42:34+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ralph Design Studios</title><subtitle>The design company working on liberating human creativity from any limits. Make something new, make it younique. Explore our blogs on programming, creativity and digital exploration. Check out our projects and support our mission.</subtitle><entry><title type="html">Role Based Authentication</title><link href="http://localhost:4000/databases/2024/08/24/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Role Based Authentication" /><published>2024-08-24T11:46:00+02:00</published><updated>2024-08-24T11:46:00+02:00</updated><id>http://localhost:4000/databases/2024/08/24/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/databases/2024/08/24/welcome-to-jekyll.html"><![CDATA[<h1 id="1-defining-roles">1. Defining Roles</h1>
+
+<p>For a more human-friendly approach to referencing roles, you can create a custom enum type:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TYPE</span> <span class="n">user_role</span> <span class="k">AS</span> <span class="nb">ENUM</span> <span class="p">(</span><span class="s1">'spots_moderator'</span><span class="p">,</span> <span class="s1">'admin'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h1 id="2-setting-up-the-user_roles-table">2. Setting Up the “user_roles” Table</h1>
+
+<p>The <code class="language-plaintext highlighter-rouge">user_roles</code> table allows us to link roles with users. To ensure the security of user_roles, enable Row-Level Security (RLS) and implement the policy:</p>
+
+<h1 id="2-setting-up-the-user_roles-table-1">2. Setting Up the “user_roles” Table</h1>
+
+<p>The <code class="language-plaintext highlighter-rouge">user_roles</code> table allows us to link roles with users. To ensure the security of user_roles, enable Row-Level Security (RLS) and implement the policy:</p>
+
+<p><img src="https://miro.medium.com/v2/resize:fit:525/1*bgt9cwgv-PIP22xNMQ_m2g.png" alt="" /></p>
+
+<p>To secure <code class="language-plaintext highlighter-rouge">user_roles</code> enable RLS (Row-level security) and add following policy <code class="language-plaintext highlighter-rouge">auth.uid() = user_id</code></p>
+
+<p><img src="https://miro.medium.com/v2/resize:fit:700/1*2TH1olH83xgtjYJ7Ad3Shw.png" alt="" /></p>
+
+<p>This policy grants authenticated users access to read the roles they possess.</p>
+
+<p>Key points:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">user_id</code> references <code class="language-plaintext highlighter-rouge">auth.users.id</code></li>
+  <li>The role is based on the <code class="language-plaintext highlighter-rouge">user_role</code> type (the enum type from step 1.)</li>
+  <li>RLS enables reading of roles owned by the user</li>
+</ul>
+
+<h1 id="3-implementing-row-level-security-for-role-specific-access">3. Implementing Row-Level Security for Role-Specific Access</h1>
+
+<p>You can now control access to specific rows within a table, such as <code class="language-plaintext highlighter-rouge">spot_proposals</code> in this case, by users with particular roles. This is done by specifying the following RLS condition:</p>
+
+<p><img src="https://miro.medium.com/v2/resize:fit:700/1*6TTjaHJURngSCNAumm_D7Q.png" alt="" /></p>
+
+<p>Key points:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">user_roles</code> has an RLS policy, allowing authenticated users to read their roles</li>
+  <li>The RLS policy on <code class="language-plaintext highlighter-rouge">spot_proposals</code> restricts access to specific roles, such as <code class="language-plaintext highlighter-rouge">spots_moderator</code></li>
+</ul>
+
+<p>This setup ensures a straightforward yet effective role-based access control mechanism in Supabase.</p>
+
+<p>Looking for more Supabase content? Join me on Twitter and Medium for the latest updates, tutorials, and insights! Follow along to stay in the loop.</p>]]></content><author><name></name></author><category term="databases" /><summary type="html"><![CDATA[1. Defining Roles]]></summary></entry></feed>

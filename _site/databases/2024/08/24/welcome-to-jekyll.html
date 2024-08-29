@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"><link rel="stylesheet" href="/assets/main.css">
+<link rel="shortcut icon" type="image/png" href="/favicon.png"><body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Ralph Design Studios</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Role Based Authentication</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2024-08-24T11:46:00+02:00" itemprop="datePublished">Aug 24, 2024
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="1-defining-roles">1. Defining Roles</h1>
+
+<p>For a more human-friendly approach to referencing roles, you can create a custom enum type:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TYPE</span> <span class="n">user_role</span> <span class="k">AS</span> <span class="nb">ENUM</span> <span class="p">(</span><span class="s1">'spots_moderator'</span><span class="p">,</span> <span class="s1">'admin'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h1 id="2-setting-up-the-user_roles-table">2. Setting Up the “user_roles” Table</h1>
+
+<p>The <code class="language-plaintext highlighter-rouge">user_roles</code> table allows us to link roles with users. To ensure the security of user_roles, enable Row-Level Security (RLS) and implement the policy:</p>
+
+<h1 id="2-setting-up-the-user_roles-table-1">2. Setting Up the “user_roles” Table</h1>
+
+<p>The <code class="language-plaintext highlighter-rouge">user_roles</code> table allows us to link roles with users. To ensure the security of user_roles, enable Row-Level Security (RLS) and implement the policy:</p>
+
+<p><img src="https://miro.medium.com/v2/resize:fit:525/1*bgt9cwgv-PIP22xNMQ_m2g.png" alt="" /></p>
+
+<p>To secure <code class="language-plaintext highlighter-rouge">user_roles</code> enable RLS (Row-level security) and add following policy <code class="language-plaintext highlighter-rouge">auth.uid() = user_id</code></p>
+
+<p><img src="https://miro.medium.com/v2/resize:fit:700/1*2TH1olH83xgtjYJ7Ad3Shw.png" alt="" /></p>
+
+<p>This policy grants authenticated users access to read the roles they possess.</p>
+
+<p>Key points:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">user_id</code> references <code class="language-plaintext highlighter-rouge">auth.users.id</code></li>
+  <li>The role is based on the <code class="language-plaintext highlighter-rouge">user_role</code> type (the enum type from step 1.)</li>
+  <li>RLS enables reading of roles owned by the user</li>
+</ul>
+
+<h1 id="3-implementing-row-level-security-for-role-specific-access">3. Implementing Row-Level Security for Role-Specific Access</h1>
+
+<p>You can now control access to specific rows within a table, such as <code class="language-plaintext highlighter-rouge">spot_proposals</code> in this case, by users with particular roles. This is done by specifying the following RLS condition:</p>
+
+<p><img src="https://miro.medium.com/v2/resize:fit:700/1*6TTjaHJURngSCNAumm_D7Q.png" alt="" /></p>
+
+<p>Key points:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">user_roles</code> has an RLS policy, allowing authenticated users to read their roles</li>
+  <li>The RLS policy on <code class="language-plaintext highlighter-rouge">spot_proposals</code> restricts access to specific roles, such as <code class="language-plaintext highlighter-rouge">spots_moderator</code></li>
+</ul>
+
+<p>This setup ensures a straightforward yet effective role-based access control mechanism in Supabase.</p>
+
+<p>Looking for more Supabase content? Join me on Twitter and Medium for the latest updates, tutorials, and insights! Follow along to stay in the loop.</p>
+
+  </div><a class="u-url" href="/databases/2024/08/24/welcome-to-jekyll.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Ralph Design Studios</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Ralph Design Studios</li><li><a class="u-email" href="mailto:ralphmoi@ralphstudios.design">ralphmoi@ralphstudios.design</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/Thabiso004"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">Thabiso004</span></a></li><li><a href="https://instagram.com/ralph__moi"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#instagram"></use></svg> <span class="username">ralph__moi</span></a></li><li><a href="https://www.twitter.com/ThabisoForReal"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">ThabisoForReal</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>The design company working on liberating human creativity from any limits. Make something new, make it younique. Explore our blogs on programming, creativity and digital exploration. Check out our projects and support our mission.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
