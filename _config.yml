@@ -24,7 +24,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   The design company working on liberating human creativity from any limits.
   Make something new, make it younique. Explore our blogs on programming, creativity
   and digital exploration. Check out our projects and support our mission.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://ralphstudios.design" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: ThabisoForReal
 github_username:  Thabiso004
