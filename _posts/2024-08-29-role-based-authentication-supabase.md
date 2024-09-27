@@ -46,4 +46,14 @@ Key points:
 
 This setup ensures a straightforward yet effective role-based access control mechanism in Supabase.
 
-Looking for more Supabase content? Join me on Twitter and Medium for the latest updates, tutorials, and insights! Follow along to stay in the loop.
+Looking for more Supabase content? Join me on Twitter and Medium for the latest updates, tutorials, and insights! 
+Follow along to stay in the loop.
+
+  <script src="https://utteranc.es/client.js"
+    repo="<your github username>/<repository name>.github.io"
+    issue-term="pathname"
+    label="<your-custom-label>"
+    theme="dark-blue"
+    crossorigin="anonymous"
+    async>
+  </script>
